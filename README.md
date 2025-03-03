@@ -1,4 +1,4 @@
-# akoo_bot
+# 🤖 akoo_bot
 A Discord bot that uses Gemini API to generate responses
 
 ## 🛠️ TODO:
