@@ -7,6 +7,6 @@ A Discord bot that uses Gemini API to generate responses
 - [ ] Add features like music and reminders
 
 ## 📌 Features:
-- play music
+- plays music
 - schedule reminders
 - generate AI responses
