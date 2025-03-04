@@ -25,4 +25,10 @@ async def on_message(message):
     if message.content.startswith("!hello"):
         await message.channel.send("Hello I am akoo_bot 👋")
 
+@bot.event
+async def on_member_join(member):
+    channel = discord.utils.get(member.guild.text_channels, name = "general")
+    if channel:
+        await channel.send(f'Hola {member.mention}, Welcome to the server!')
+
 bot.run(DISCORD_TOKEN)
