@@ -13,8 +13,13 @@ A Discord bot that uses Gemini API to generate responses
 - [x] Welcome new members to the server
 - [x] Enable bot to use slash commands 
 - [ ] Be able to create polls
-- [ ] Link the Gemini API to the Discord API to generate responses in the server
+- [x] Link the Gemini API to the Discord API to generate responses in the server
 - [ ] Add features like music and reminders
 
 ## 🚀 IMPROVEMENTS:
-- Store the reminders in a database so that they are not delayed in case the bot goes offline or restarts
+- [ ] Store the reminders in a database so that they are not delayed in case the bot goes offline or restarts
+
+## 🎯 CHALLENGES:
+- [x] Setting reminders in sec, mins, hours
+- [ ] Handling AI responses larger than 2000 characters and sending it to the discord API
+- [ ] Figuring out rate limits
