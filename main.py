@@ -29,6 +29,9 @@ async def on_message(message):
     
     if message.content.startswith("!hello"):
         await message.channel.send("Hello I am akoo_bot 👋")
+    
+    elif message.content.lower() == "!are u alive":
+        await message.channel.send("Yes I am alive and kicking")
 
 @bot.event
 async def on_member_join(member):
@@ -36,7 +39,6 @@ async def on_member_join(member):
     if channel:
         await channel.send(f'Hola {member.mention}, Welcome to the server!')
 
-# slash commands for setting up reminders
 @bot.tree.command(name="remind", description="Set a reminder")
 async def remind(interaction: discord.Interaction, time: int, unit: str, message: str):
     if unit == 's':
@@ -49,7 +51,6 @@ async def remind(interaction: discord.Interaction, time: int, unit: str, message
         n_time = time*3600
         await interaction.response.send_message(f"Reminder set for {time} hours!", ephemeral=True)
 
-   ## await interaction.response.send_message(f"Reminder set for {time} seconds!", ephemeral=True)
     await asyncio.sleep(n_time)
     await interaction.followup.send(f"⏰{interaction.user.mention} Reminder: {message}", ephemeral=True)
 
