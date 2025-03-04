@@ -17,3 +17,4 @@ A Discord bot that uses Gemini API to generate responses
 - [ ] Add features like music and reminders
 
 ## 🚀 IMPROVEMENTS:
+- Store the reminders in a database so that they are not delayed in case the bot goes offline or restarts
