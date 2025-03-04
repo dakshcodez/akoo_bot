@@ -5,7 +5,7 @@ A Discord bot that uses Gemini API to generate responses
 - Welcomes new members who join the server.
 - Can create polls
 - Plays music
-- Schedule reminders
+- Schedule reminders in sec, mins, hours
 - Generate AI responses
 
 ## 🛠️ TODO:
