@@ -35,9 +35,19 @@ async def on_member_join(member):
 
 # slash commands for setting up reminders
 @bot.tree.command(name="remind", description="Set a reminder")
-async def remind(interaction: discord.Interaction, time: int, message: str):
-    await interaction.response.send_message(f"Reminder set for {time} seconds!", ephemeral=True)
-    await asyncio.sleep(time)
+async def remind(interaction: discord.Interaction, time: int, unit: str, message: str):
+    if unit == 's':
+        n_time = time
+        await interaction.response.send_message(f"Reminder set for {time} seconds!", ephemeral=True)
+    elif unit == 'm':
+        n_time = time*60
+        await interaction.response.send_message(f"Reminder set for {time} minutes!", ephemeral=True)
+    elif unit == 'h':
+        n_time = time*3600
+        await interaction.response.send_message(f"Reminder set for {time} hours!", ephemeral=True)
+
+   ## await interaction.response.send_message(f"Reminder set for {time} seconds!", ephemeral=True)
+    await asyncio.sleep(n_time)
     await interaction.followup.send(f"⏰{interaction.user.mention} Reminder: {message}", ephemeral=True)
 
 bot.run(DISCORD_TOKEN)
