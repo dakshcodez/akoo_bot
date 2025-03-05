@@ -27,3 +27,4 @@ A Discord bot that uses Gemini API to generate responses
 - [ ] Can make use of embed method to generate embeded messages
 - [ ] Better Error Handling
 - [ ] Better handling of requests generated to the Gemini API in order to prevent exceeding rate limit
+- [ ] Queue and dequeue system for the music
