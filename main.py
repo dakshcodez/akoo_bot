@@ -39,6 +39,7 @@ async def on_message(message):
 # async def hello(ctx):
 #     await ctx.send("Hello I am akoo_bot 👋")
 
+#welcome message
 @bot.event
 async def on_member_join(member):
     channel = discord.utils.get(member.guild.text_channels, name = "general")
