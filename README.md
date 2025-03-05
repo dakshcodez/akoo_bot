@@ -18,8 +18,12 @@ A Discord bot that uses Gemini API to generate responses
 
 ## 🚀 IMPROVEMENTS:
 - [ ] Store the reminders in a database so that they are not delayed in case the bot goes offline or restarts
+- [ ] Set reminders according date and time
+- [ ] Can make use of embed method to generate embeded messages
+- [ ] Better Error Handling
 
-## 🎯 CHALLENGES:
+## 🎯 CHALLENGES FACED:
 - [x] Setting reminders in sec, mins, hours
-- [ ] Handling AI responses larger than 2000 characters and sending it to the discord API
-- [ ] Figuring out rate limits
+- [x] Handling AI responses larger than 2000 characters and sending it to the discord API
+- [x] Figuring out rate limits
+- [x] Figuring out discord API's timeout and fixing that 
