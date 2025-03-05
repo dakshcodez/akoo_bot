@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+import yt_dlp as youtube_dl
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -13,8 +14,9 @@ GEMINI_TOKEN = os.getenv('GEMINI_TOKEN')
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.voice_states = True
 
-bot = commands.Bot(command_prefix = '!', intents=intents)
+bot = commands.Bot(command_prefix = "!", intents=intents)
 client = genai.Client(api_key = GEMINI_TOKEN)
 
 @bot.event
@@ -38,6 +40,30 @@ async def on_member_join(member):
     channel = discord.utils.get(member.guild.text_channels, name = "general")
     if channel:
         await channel.send(f'Hola {member.mention}, Welcome to the server!')
+
+@bot.command()  
+async def join(ctx):
+    if not ctx.author.voice:
+        await ctx.send("Join a voice channel first!")
+        return
+    
+    channel = ctx.author.voice.channel
+
+    if ctx.voice_client:
+        await ctx.send(f"I'm already connected to {ctx.voice_client.channel.name}.")
+        return
+    
+    try:
+        await channel.connect()
+        await ctx.send(f"Joined {channel.name}!")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {str(e)}")
+        print(f"Error connecting to channel: {e}")
+
+@bot.command()
+async def disconnect(ctx):
+    if ctx.voice_client:
+        await ctx.voice_client.disconnect()
 
 @bot.tree.command(name="remind", description="Set a reminder")
 async def remind(interaction: discord.Interaction, time: int, unit: str, message: str):
