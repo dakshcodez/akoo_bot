@@ -172,4 +172,27 @@ async def ai(interaction: discord.Interaction, message: str):
     except Exception as e:
         await interaction.followup.send(f"Error: {str(e)}") 
 
+#summarize
+@bot.tree.command(name="summarize", description="Summarize text")
+async def summarize(interaction: discord.Interaction, text: str):
+    await interaction.response.defer()
+    
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=["summarize " + text] 
+        )
+
+        response_text = getattr(response, "text", "No response received.")
+
+        if len(response_text) > 2000:
+            parts =[response_text[i:i+2000] for i in range(0, len(response_text), 2000)]
+            for part in parts:
+                await interaction.followup.send(part)
+        else: 
+            await interaction.followup.send(response_text)
+
+    except Exception as e:
+        await interaction.followup.send(f"Error: {str(e)}")
+
 bot.run(DISCORD_TOKEN)
