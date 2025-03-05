@@ -1,12 +1,19 @@
 # 🤖 akoo_bot
-A Discord bot that uses Gemini API to generate responses
+**A Discord Bot that uses Gemini API to generate responses.**
 
-## 📌 Features:
-- Welcomes new members who join the server.
-- Generate AI responses
-- Summarize long paragraphs
-- Plays music
-- Schedule reminders in sec, mins, hours
+## 🔗 INVITE LINK:
+<a href = "https://discord.com/oauth2/authorize?client_id=1346150738136666152&permissions=8&integration_type=0&scope=bot" target="_main">akoo_bot</a>
+
+## ⚙️ TECHNOLOGIES USED:
+- **Language**: Python 🐍
+- **AI Model**: Gemini API 💎
+
+## 📌 FEATURES:
+- Welcomes new members who join the server 🙋‍♂️
+- Generate AI responses 📜
+- Summarize long paragraphs 📝
+- Plays music 🎧
+- Schedule reminders in sec, mins, hours ⏰
 
 ## 🛠️ TODO:
 - [x] Link the Discord API
