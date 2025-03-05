@@ -45,54 +45,92 @@ async def on_member_join(member):
     if channel:
         await channel.send(f'Hola {member.mention}, Welcome to the server!')
 
-# @bot.command()  
-# async def join(ctx):
-#     if not ctx.author.voice:
-#         await ctx.send("Join a voice channel first!")
-#         return
-    
-#     channel = ctx.author.voice.channel
+async def join(interaction: discord.Interaction, respond=True):
+    if interaction.user.voice:
+        channel = interaction.user.voice.channel
+        if interaction.guild.voice_client is None:
+            await channel.connect()
+            if respond:
+                await interaction.response.send_message(f"Joined {channel.name}")
+        else:
+            if respond:
+                await interaction.response.send_message("Already in a voice channel.")
+    else:
+        if respond:
+            await interaction.response.send_message("You are not in a voice channel.")
 
-#     if ctx.voice_client:
-#         await ctx.send(f"I'm already connected to {ctx.voice_client.channel.name}.")
-#         return
-    
-#     try:
-#         await channel.connect()
-#         await ctx.send(f"Joined {channel.name}!")
-#     except Exception as e:
-#         await ctx.send(f"An error occurred: {str(e)}")
-#         print(f"Error connecting to channel: {e}")
-
-# @bot.command()
-# async def disconnect(ctx):
-#     if ctx.voice_client:
-#         await ctx.voice_client.disconnect()
-
-@bot.tree.command(name="join", description="Join a voice channel")
-async def join(interaction: discord.Interaction):
-    if not interaction.user.voice:
-        await interaction.response.send_message("Join a voice channel first!", ephemeral=True)
-        return
-    
-    channel = interaction.user.voice.channel
-
-    if interaction.guild.voice_client:
-        await interaction.response.send_message(f"I'm already connected to {interaction.guild.voice_client.channel.name}.", ephemeral=True)
-        return
-    
-    try:
-        await channel.connect()
-        await interaction.response.send_message(f"Joined {channel.name}!", ephemeral=True)
-    except Exception as e:
-        await interaction.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
-        print(f"Error connecting to channel: {e}")
-
-@bot.tree.command(name="disconnect", description="Disconnect from a voice channel")
-async def disconnect(interaction: discord.Interaction):
+async def leave(interaction: discord.Interaction):
     if interaction.guild.voice_client:
         await interaction.guild.voice_client.disconnect()
-        await interaction.response.send_message("Disconnected from voice channel!", ephemeral=True)
+        await interaction.response.send_message("Left the voice channel.")
+    else:
+        await interaction.response.send_message("Not in a voice channel.")
+
+@bot.tree.command(name="join", description="Joins the voice channel")
+async def join_command(interaction: discord.Interaction):
+    await join(interaction)
+
+@bot.tree.command(name="leave", description="Leaves the voice channel")
+async def leave_command(interaction: discord.Interaction):
+    await leave(interaction)
+
+# Music playback functions.
+youtube_dl_opts = {
+    'format': 'bestaudio/best',
+    'extractaudio': True,
+    'audioformat': 'mp3',
+    'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+    'restrictfilenames': True,
+    'noplaylist': True,
+    'nocheckcertificate': True,
+    'ignoreerrors': False,
+    'logtostderr': False,
+    'quiet': True,
+    'no_warnings': True,
+    'default_search': 'auto',
+    'source_address': '0.0.0.0'  # Bind to IPv4 since IPv6 addresses cause issues sometimes.
+}
+
+ffmpeg_opts = {
+    'options': '-vn'
+}
+
+ytdl = youtube_dl.YoutubeDL(youtube_dl_opts)
+
+async def play(interaction: discord.Interaction, url: str):
+    """ Plays a song from a YouTube URL. """
+    if interaction.guild.voice_client is None:
+        await join(interaction, respond=False)  # Prevent duplicate responses.
+
+    voice_client = interaction.guild.voice_client
+
+    try:
+        data = ytdl.extract_info(url, download=False)
+    except Exception as e:
+        await interaction.followup.send(f"Error: {e}")
+        return
+
+    if 'entries' in data:
+        data = data['entries'][0]
+
+    filename = data['url']
+
+    voice_client.play(discord.FFmpegPCMAudio(filename, **ffmpeg_opts), after=lambda e: print(f'Player error: {e}') if e else None)
+    await interaction.followup.send(f"Now playing: {data['title']}")
+
+@bot.tree.command(name="play", description="Plays a song from YouTube")
+async def play_command(interaction: discord.Interaction, url: str):
+    await interaction.response.defer()  # Prevents multiple responses issue.
+    await play(interaction, url)
+
+@bot.tree.command(name="stop", description="Stops the currently playing song")
+async def stop_command(interaction: discord.Interaction):
+    voice_client = interaction.guild.voice_client
+    if voice_client and voice_client.is_playing():
+        voice_client.stop()
+        await interaction.response.send_message("Stopped playing.")
+    else:
+        await interaction.response.send_message("Nothing is playing.")
 
 #Reminder command
 @bot.tree.command(name="remind", description="Set a reminder")
