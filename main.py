@@ -35,35 +35,64 @@ async def on_message(message):
     elif message.content.lower() == "!are u alive":
         await message.channel.send("Yes I am alive and kicking")
 
+# @bot.command()
+# async def hello(ctx):
+#     await ctx.send("Hello I am akoo_bot 👋")
+
 @bot.event
 async def on_member_join(member):
     channel = discord.utils.get(member.guild.text_channels, name = "general")
     if channel:
         await channel.send(f'Hola {member.mention}, Welcome to the server!')
 
-@bot.command()  
-async def join(ctx):
-    if not ctx.author.voice:
-        await ctx.send("Join a voice channel first!")
+# @bot.command()  
+# async def join(ctx):
+#     if not ctx.author.voice:
+#         await ctx.send("Join a voice channel first!")
+#         return
+    
+#     channel = ctx.author.voice.channel
+
+#     if ctx.voice_client:
+#         await ctx.send(f"I'm already connected to {ctx.voice_client.channel.name}.")
+#         return
+    
+#     try:
+#         await channel.connect()
+#         await ctx.send(f"Joined {channel.name}!")
+#     except Exception as e:
+#         await ctx.send(f"An error occurred: {str(e)}")
+#         print(f"Error connecting to channel: {e}")
+
+# @bot.command()
+# async def disconnect(ctx):
+#     if ctx.voice_client:
+#         await ctx.voice_client.disconnect()
+
+@bot.tree.command(name="join", description="Join a voice channel")
+async def join(interaction: discord.Interaction):
+    if not interaction.user.voice:
+        await interaction.response.send_message("Join a voice channel first!", ephemeral=True)
         return
     
-    channel = ctx.author.voice.channel
+    channel = interaction.user.voice.channel
 
-    if ctx.voice_client:
-        await ctx.send(f"I'm already connected to {ctx.voice_client.channel.name}.")
+    if interaction.guild.voice_client:
+        await interaction.response.send_message(f"I'm already connected to {interaction.guild.voice_client.channel.name}.", ephemeral=True)
         return
     
     try:
         await channel.connect()
-        await ctx.send(f"Joined {channel.name}!")
+        await interaction.response.send_message(f"Joined {channel.name}!", ephemeral=True)
     except Exception as e:
-        await ctx.send(f"An error occurred: {str(e)}")
+        await interaction.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
         print(f"Error connecting to channel: {e}")
 
-@bot.command()
-async def disconnect(ctx):
-    if ctx.voice_client:
-        await ctx.voice_client.disconnect()
+@bot.tree.command(name="disconnect", description="Disconnect from a voice channel")
+async def disconnect(interaction: discord.Interaction):
+    if interaction.guild.voice_client:
+        await interaction.guild.voice_client.disconnect()
+        await interaction.response.send_message("Disconnected from voice channel!", ephemeral=True)
 
 @bot.tree.command(name="remind", description="Set a reminder")
 async def remind(interaction: discord.Interaction, time: int, unit: str, message: str):
