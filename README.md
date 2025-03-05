@@ -3,10 +3,10 @@ A Discord bot that uses Gemini API to generate responses
 
 ## 📌 Features:
 - Welcomes new members who join the server.
+- Generate AI responses
+- Schedule reminders in sec, mins, hours
 - Can create polls
 - Plays music
-- Schedule reminders in sec, mins, hours
-- Generate AI responses
 
 ## 🛠️ TODO:
 - [x] Link the Discord API
