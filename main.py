@@ -98,6 +98,7 @@ ffmpeg_opts = {
 
 ytdl = youtube_dl.YoutubeDL(youtube_dl_opts)
 
+song_queue = []
 async def play(interaction: discord.Interaction, url: str):
     """ Plays a song from a YouTube URL. """
     if interaction.guild.voice_client is None:
@@ -116,13 +117,31 @@ async def play(interaction: discord.Interaction, url: str):
 
     filename = data['url']
 
-    voice_client.play(discord.FFmpegPCMAudio(filename, **ffmpeg_opts), after=lambda e: print(f'Player error: {e}') if e else None)
+    def after_playing(error):
+        if error:
+            print(f'Player error: {error}')
+        if song_queue:
+            next_url = song_queue.pop(0)
+            asyncio.run_coroutine_threadsafe(play(interaction, next_url), bot.loop)
+        else:
+            asyncio.run_coroutine_threadsafe(interaction.followup.send("Finished playing."), bot.loop)
+
+    voice_client.play(discord.FFmpegPCMAudio(filename, **ffmpeg_opts), after=after_playing)
     await interaction.followup.send(f"Now playing: {data['title']}")
 
 @bot.tree.command(name="play", description="Plays a song from YouTube")
 async def play_command(interaction: discord.Interaction, url: str):
-    await interaction.response.defer()  # Prevents multiple responses issue.
-    await play(interaction, url)
+    await interaction.response.defer()
+    if interaction.user.voice is None:
+        await interaction.followup.send("You are not in a voice channel.")
+        return
+    song_queue.append(url)
+    if not interaction.guild.voice_client or not interaction.guild.voice_client.is_playing():
+        while song_queue:
+            url = song_queue.pop(0)
+            await play(interaction, url)
+    else:
+        await interaction.followup.send(f"Added {url} to the queue.")
 
 @bot.tree.command(name="stop", description="Stops the currently playing song")
 async def stop_command(interaction: discord.Interaction):
@@ -133,6 +152,11 @@ async def stop_command(interaction: discord.Interaction):
     else:
         await interaction.response.send_message("Nothing is playing.")
 
+@bot.tree.command(name="add", description="Add song to queue")
+async def add_command(interaction: discord.Interaction, url: str):
+    song_queue.append(url)
+    await interaction.response.send_message(f"Added {url} to the queue.")
+    
 #Reminder command
 @bot.tree.command(name="remind", description="Set a reminder")
 async def remind(interaction: discord.Interaction, time: int, unit: str, message: str):
