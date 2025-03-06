@@ -21,6 +21,8 @@
 - [x] Enable bot to use slash commands 
 - [x] Link the Gemini API to the Discord API to generate responses in the server
 - [x] Add features like music and reminders
+- [ ] Add pause and resume feature
+- [ ] Add queue and dequeue feature
 - [ ] Be able to create polls
 
 ## 🎯 CHALLENGES FACED:
