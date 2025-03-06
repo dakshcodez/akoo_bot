@@ -145,6 +145,9 @@ async def remind(interaction: discord.Interaction, time: int, unit: str, message
     elif unit == 'h':
         n_time = time*3600
         await interaction.response.send_message(f"Reminder set for {time} hours!", ephemeral=True)
+    else:
+        await interaction.response.send_message("Invalid unit. Please use s, m or h.", ephemeral=True)
+        return
 
     await asyncio.sleep(n_time)
     await interaction.followup.send(f"⏰{interaction.user.mention} Reminder: {message}", ephemeral=True)
