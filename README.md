@@ -30,6 +30,7 @@
 - Handling AI responses larger than 2000 characters and sending it to the discord API
 - Figuring out discord API's timeout and fixing that 
 - Playing music using ffmpeg was really hard
+- Adding the queue feature took some brain cells
 
 ## 🚀 IMPROVEMENTS THAT CAN BE MADE:
 - [ ] Store the reminders in a database so that they are not delayed in case the bot goes offline or restarts
