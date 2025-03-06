@@ -2,7 +2,7 @@
 **A Discord Bot that uses Gemini API to generate responses.**
 
 ## 🔗 INVITE LINK:
-<a href = "https://discord.com/oauth2/authorize?client_id=1346150738136666152&permissions=8&integration_type=0&scope=bot" target="_main">akoo_bot</a>
+<a href = "https://discord.com/oauth2/authorize?client_id=1346150738136666152&permissions=8&integration_type=0&scope=bot" target="_main">Invite akoo_bot to your server</a>
 
 ## ⚙️ TECHNOLOGIES USED:
 - **Language**: Python 🐍
