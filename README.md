@@ -31,6 +31,7 @@
 - Figuring out discord API's timeout and fixing that 
 - Playing music using ffmpeg was really hard
 - Adding the queue feature took some brain cells
+- Making people understand why I used Gemini API and not OpenAI API
 
 ## 🚀 IMPROVEMENTS THAT CAN BE MADE:
 - [ ] Store the reminders in a database so that they are not delayed in case the bot goes offline or restarts
