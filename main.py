@@ -143,6 +143,24 @@ async def play_command(interaction: discord.Interaction, url: str):
     else:
         await interaction.followup.send(f"Added {url} to the queue.")
 
+@bot.tree.command(name="pause", description="Pauses the current song")
+async def pause_command(interaction: discord.Interaction):
+    voice_client = interaction.guild.voice_client
+    if voice_client and voice_client.is_playing():
+        voice_client.pause()
+        await interaction.response.send_message("Paused.")
+    else:
+        await interaction.response.send_message("Nothing is playing.")
+
+@bot.tree.command(name="resume", description="Resumes the current song")
+async def resume_command(interaction: discord.Interaction):
+    voice_client = interaction.guild.voice_client
+    if voice_client and voice_client.is_paused():
+        voice_client.resume()
+        await interaction.response.send_message("Resumed.")
+    else:
+        await interaction.response.send_message("Nothing is paused.")
+
 @bot.tree.command(name="stop", description="Stops the currently playing song")
 async def stop_command(interaction: discord.Interaction):
     voice_client = interaction.guild.voice_client
