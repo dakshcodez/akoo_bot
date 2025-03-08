@@ -41,3 +41,5 @@
 - [ ] Better handling of requests generated to the Gemini API in order to prevent exceeding rate limit
 - [ ] Queue and dequeue system for the music
 - [ ] Be able to pause and resume music using a good UI
+- [ ] Make the AI feature behave like a chatbot by storing the previous responses in a database
+- [ ] Make the bot in a way that it accepts the song's name instead of its URL
